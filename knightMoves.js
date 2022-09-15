@@ -1,30 +1,32 @@
-const knightMoves = (start, target, queue = [], history = []) => {
-  const KNIGHT_OFFSETS = [
-    [2, 1],
-    [2, -1],
-    [-2, 1],
-    [-2, -1],
-    [1, 2],
-    [-1, 2],
-    [1, -2],
-    [-1, -2],
-  ];
+const KNIGHT_OFFSETS = [
+  [2, 1],
+  [2, -1],
+  [-2, 1],
+  [-2, -1],
+  [1, 2],
+  [-1, 2],
+  [1, -2],
+  [-1, -2],
+];
 
-  const createSquare = (coordinates, previous) => {
-    return {
-      coordinates: [...coordinates],
-      previous,
-    };
+const createSquare = (coordinates, previous) => {
+  return {
+    coordinates: [...coordinates],
+    previous,
   };
+};
 
-  const getMoves = ([x, y]) => {
-    return KNIGHT_OFFSETS.map(([offsetX, offsetY]) => {
-      return [offsetX + x, offsetY + y];
-    }).filter(([newX, newY]) => {
-      return 0 <= newX && newX < 8 && 0 <= newY && newY < 8;
-    });
-  };
+const getMoves = ([x, y]) => {
+  return KNIGHT_OFFSETS.map(([offsetX, offsetY]) => {
+    return [offsetX + x, offsetY + y];
+    // Filter for moves that are in bounds
+  }).filter(([newX, newY]) => {
+    return 0 <= newX && newX < 8 && 0 <= newY && newY < 8;
+  });
+};
 
+const knightMoves = (start, target, queue = []) => {
+  queue.push(createSquare(start, null));
   const checkSquare = (square, target) => {
     //Base case, found ending vertex of path
     if (
@@ -59,7 +61,6 @@ const knightMoves = (start, target, queue = [], history = []) => {
     }
   };
 
-  queue.push(createSquare(start, null));
   const shortestPath = checkSquare(queue.shift(), target);
   console.log(`You made it in ${shortestPath.length} moves!`);
   console.log("Here is your path:");
@@ -67,5 +68,3 @@ const knightMoves = (start, target, queue = [], history = []) => {
     console.log(coords);
   });
 };
-
-knightMoves([1, 1], [7, 7]);
