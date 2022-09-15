@@ -1,4 +1,4 @@
-const knightMoves = (start, end, queue = []) => {
+const knightMoves = (start, target, queue = []) => {
   const KNIGHT_OFFSETS = [
     [2, 1],
     [2, -1],
@@ -25,13 +25,16 @@ const knightMoves = (start, end, queue = []) => {
     });
   };
 
-  const checkSquare = (square) => {
+  const checkSquare = (square, target) => {
     //Base case, found ending vertex of path
-    if (square.coordinates == end) {
+    if (
+      square.coordinates[0] == target[0] &&
+      square.coordinates[1] == target[1]
+    ) {
       return outputPath(square);
     } else {
       enqueueChildren(square);
-      return checkSquare(queue.shift());
+      return checkSquare(queue.shift(), target);
     }
   };
 
@@ -39,7 +42,6 @@ const knightMoves = (start, end, queue = []) => {
     const moves = getMoves(square.coordinates);
     moves.forEach((move) => {
       const nextMove = createSquare(move, square.coordinates);
-      nextMove.previous = square.coordinates;
       queue.push(nextMove);
     });
   };
@@ -49,15 +51,16 @@ const knightMoves = (start, end, queue = []) => {
     path.unshift(square.coordinates);
     // Base case, reached the starting square
     if (!square.previous) {
+      path.unshift(square.coordinates);
       return path;
     } else {
       // Recursive step: add the previous square to the path array
-      return outputPath(square.previous);
+      return outputPath(square.previous, path);
     }
   };
 
   queue.push(createSquare(start));
-  return checkSquare(queue.shift());
+  return checkSquare(queue.shift(), target);
 };
 
-knightMoves([0, 0], [2, 1]);
+console.log(knightMoves([0, 0], [2, 1]));
