@@ -60,7 +60,12 @@ const knightMoves = (start, target, queue = [], history = []) => {
   };
 
   queue.push(createSquare(start, null));
-  return checkSquare(queue.shift(), target);
+  const shortestPath = checkSquare(queue.shift(), target);
+  console.log(`You made it in ${shortestPath.length} moves!`);
+  console.log("Here is your path:");
+  shortestPath.map((coords) => {
+    console.log(coords);
+  });
 };
 
-console.log(knightMoves([0, 0], [5, 7]));
+knightMoves([1, 1], [7, 7]);
