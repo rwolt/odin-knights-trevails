@@ -13,7 +13,7 @@ const knightMoves = (start, target, queue = [], history = []) => {
   const createSquare = (coordinates, previous) => {
     return {
       coordinates: [...coordinates],
-      previous: previous ? [...previous] : null,
+      previous,
     };
   };
 
@@ -42,7 +42,7 @@ const knightMoves = (start, target, queue = [], history = []) => {
   const enqueueChildren = (square) => {
     const moves = getMoves(square.coordinates);
     moves.forEach((move) => {
-      const nextMove = createSquare(move, square.coordinates);
+      const nextMove = createSquare(move, square);
       queue.push(nextMove);
     });
   };
@@ -59,8 +59,8 @@ const knightMoves = (start, target, queue = [], history = []) => {
     }
   };
 
-  queue.push(createSquare(start));
+  queue.push(createSquare(start, null));
   return checkSquare(queue.shift(), target);
 };
 
-console.log(knightMoves([0, 0], [2, 1]));
+console.log(knightMoves([0, 0], [5, 7]));
