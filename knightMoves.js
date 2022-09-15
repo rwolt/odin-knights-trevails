@@ -1,4 +1,4 @@
-const knightMoves = (start, target, queue = []) => {
+const knightMoves = (start, target, queue = [], history = []) => {
   const KNIGHT_OFFSETS = [
     [2, 1],
     [2, -1],
@@ -34,6 +34,7 @@ const knightMoves = (start, target, queue = []) => {
       return outputPath(square);
     } else {
       enqueueChildren(square);
+      //Dequeue
       return checkSquare(queue.shift(), target);
     }
   };
@@ -51,7 +52,6 @@ const knightMoves = (start, target, queue = []) => {
     path.unshift(square.coordinates);
     // Base case, reached the starting square
     if (!square.previous) {
-      path.unshift(square.coordinates);
       return path;
     } else {
       // Recursive step: add the previous square to the path array
